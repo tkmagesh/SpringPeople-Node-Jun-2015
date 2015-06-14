@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var taskRespository = require('../services/taskRepository');
+
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-    res.render('tasks/index', {list : taskRespository.getAll()});
+    res.render('tasks/index', {list : req.taskRepository.getAll()});
 });
 
 router.get('/new', function(req, res, next) {
@@ -12,19 +12,19 @@ router.get('/new', function(req, res, next) {
 });
 
 router.post('/new', function(req, res, next) {
-    taskRespository.add(req.body.newTask, function(){
+    req.taskRepository.add(req.body.newTask, function(){
         res.redirect('/tasks')
     });
 });
 
 router.get('/toggle/:id', function(req, res, next){
     var taskId = parseInt(req.params.id, 10);
-    taskRespository.toggle(taskId);
+    req.taskRepository.toggle(taskId);
     res.redirect('/tasks');
 });
 
 router.get('/removeCompleted', function(req, res, next){
-    var completedTasks = taskRespository.getCompletedTasks();
+    var completedTasks = req.taskRepository.getCompletedTasks();
     var completedIds = completedTasks.reduce(function(result,task){
         return result + task.id + ',';
     },'');
@@ -32,7 +32,7 @@ router.get('/removeCompleted', function(req, res, next){
 });
 
 router.post('/removeCompleted', function(req, res, next){
-    taskRespository.removeCompleted();
+    req.taskRepository.removeCompleted();
     res.redirect('/tasks');
 });
 module.exports = router;

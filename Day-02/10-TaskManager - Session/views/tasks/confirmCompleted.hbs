@@ -1,0 +1,18 @@
+<style>
+    .completed {
+        text-decoration: line-through;
+        color : red;
+        font-style: italic;
+    }
+</style>
+<div>Are you sure you want to remove the following completed tasks?</div>
+<ol>
+    {{#each list}}
+        <li class="completed">{{this.name}}</li>
+    {{/each}}
+</ol>
+<form method="post">
+    <input type="hidden" name="" value="{{completedIds}}">
+    <input type="submit" value="Remove">
+    <a href="/tasks">Cancel</a>
+</form>
